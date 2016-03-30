@@ -82,9 +82,12 @@ dependencies {
     // Retrofit 2
     compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
     compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
+    compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.retrofitVersion"
 
     compile "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
-    compile 'com.jakewharton.timber:timber:4.1.0'
+    compile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
+
+    compile "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
     // LeakCanary
     debugCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakCanaryVersion"

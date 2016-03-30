@@ -1,4 +1,4 @@
-package com.deveddy.clujbike;
+package com.deveddy.clujbike.di;
 
 import com.deveddy.clujbike.ClujBikeApp;
 

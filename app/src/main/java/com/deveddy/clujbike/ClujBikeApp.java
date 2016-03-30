@@ -1,6 +1,7 @@
 package com.deveddy.clujbike;
 
 import com.deveddy.clujbike.di.AppComponent;
+import com.deveddy.clujbike.di.AppModule;
 import com.deveddy.clujbike.di.DaggerAppComponent;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -10,10 +11,14 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 
-/**
- * Created by Eduard on 06.03.2016.
- */
+import javax.inject.Inject;
+
+import timber.log.Timber;
+
 public class ClujBikeApp extends Application {
+
+    @Inject
+    Timber.Tree mTimberTree;
 
     private AppComponent mAppComponent;
 
@@ -31,6 +36,9 @@ public class ClujBikeApp extends Application {
 
         // build the dependency graph
         mAppComponent = getAppComponentBuilder().build();
+        mAppComponent.inject(this);
+
+        Timber.plant(mTimberTree);
     }
 
     @NonNull

@@ -1,12 +1,12 @@
 package com.deveddy.clujbike.di;
 
-import com.deveddy.clujbike.AppModule;
+import com.deveddy.clujbike.ClujBikeApp;
+import com.deveddy.clujbike.data.VariantDataModule;
 
 import dagger.Component;
 
-/**
- * Created by Eduard on 23.03.2016.
- */
-@Component(modules = {AppModule.class})
+@Component(modules = {AppModule.class, VariantDataModule.class})
 public interface AppComponent {
+
+    void inject(ClujBikeApp clujBikeApp);
 }
