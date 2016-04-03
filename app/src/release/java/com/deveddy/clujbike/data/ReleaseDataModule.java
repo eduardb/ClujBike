@@ -1,9 +1,15 @@
 package com.deveddy.clujbike.data;
 
+import android.util.Log;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
+import dagger.Provides;
+import timber.log.Timber;
 
 @Module(includes = DataModule.class)
-public class DebugDataModule {
+public class ReleaseDataModule {
 
     /**
      * Provides the Timber.Tree dependency used for logging
