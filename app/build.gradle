@@ -102,6 +102,7 @@ dependencies {
     testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
     testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
     testCompile "com.squareup.okhttp3:mockwebserver:$rootProject.okHttpVersion"
+    testCompile "commons-io:commons-io:$rootProject.commonsIoVersion"
 
     // Android Testing Support Library's runner and rules
     androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"

@@ -31,6 +31,7 @@ ext {
     runnerVersion = '0.4.1'
     rulesVersion = '0.4.1'
     espressoVersion = '2.2.1'
+    commonsIoVersion = '2.4'
     daggerVersion = '2.0.2'
     javaxAnnotationsVersion = '10.0-b28'
     rxJavaVersion = '1.1.2'

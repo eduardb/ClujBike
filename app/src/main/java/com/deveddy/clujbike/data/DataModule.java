@@ -1,16 +1,15 @@
 package com.deveddy.clujbike.data;
 
+import android.app.Application;
+import android.support.annotation.VisibleForTesting;
+
+import com.deveddy.clujbike.data.api.ApiModule;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import com.deveddy.clujbike.data.api.ApiModule;
-
-import android.app.Application;
-
+import javax.inject.Singleton;
 import java.lang.reflect.Modifier;
 import java.util.concurrent.TimeUnit;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -53,9 +52,10 @@ public class DataModule {
      */
     @Provides
     @Singleton
-    Gson provideGson() {
+    @VisibleForTesting
+    public static Gson provideGson() {
         return new GsonBuilder()
-//                .setDateFormat("yyyy-MM-dd HH:mm:ss") // TODO
+                .setDateFormat("dd.MM.yyyy HH:mm") // ex: 03.04.2016 17:27
                 .excludeFieldsWithModifiers(Modifier.STATIC)
                 .create();
     }
