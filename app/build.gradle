@@ -32,6 +32,7 @@ android {
         debug {
             ext.enableCrashlytics = false
             buildConfigField "String", "GIT_VERSION_SHA", "\"0\""
+            testCoverageEnabled = true
         }
         leak {
         }
