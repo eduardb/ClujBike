@@ -1,9 +1,11 @@
 machine:
-   environment:
-     ANDROID_HOME: /usr/local/android-sdk-linux
+  environment:
+    ANDROID_HOME: /usr/local/android-sdk-linux
+  java:
+    version: oraclejdk8
 
 dependencies:
- pre:
+  pre:
    - echo y | android update sdk --no-ui --all --filter "tools,platform-tools,android-23"
    - echo y | android update sdk --no-ui --all --filter "build-tools-23.0.3"
    - echo y | android update sdk --no-ui --all --filter "extra-android-m2repository"
