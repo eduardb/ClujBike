@@ -44,6 +44,8 @@ android {
         }
     }
 
+    sourceSets.leak.setRoot('src/debug')
+
     packagingOptions {
         exclude 'META-INF/NOTICE.txt'
         exclude 'META-INF/LICENSE.txt'
