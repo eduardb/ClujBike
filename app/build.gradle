@@ -12,7 +12,6 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'android-apt'
 
 def getGitSha() {
     return 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim();
@@ -83,13 +82,8 @@ dependencies {
     compile libraries.support.supportAnnotation
     compile libraries.support.v4
 
-    compile libraries.playServices.all
     compile libraries.playServices.analytics
-    compile libraries.playServices.auth
-    compile libraries.playServices.identity
-    compile libraries.playServices.location
     compile libraries.playServices.maps
-    compile libraries.playServices.plus
 
     //AutoValue
     provided libraries.app.autoValue

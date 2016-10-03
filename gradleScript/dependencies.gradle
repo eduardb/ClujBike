@@ -1,7 +1,7 @@
 ext {
     supportLibraryVersion = '24.2.1'
 
-    playServicesVersion = '9.4.0'
+    playServicesVersion = '9.6.1'
 
     autoValueVersion = '1.2'
     autoValueParcelableVersion = '0.2.4-rc2'
@@ -9,7 +9,6 @@ ext {
     daggerVersion = '2.7'
     javaxAnnotationsVersion = '10.0-b28'
     okHttpVersion = '3.4.1'
-    okHttpLogInterceptorVersion = '3.3.1'
     retrofitVersion = '2.1.0'
     retrofitAdapterVersion = '2.0.1'
     retrofitConverterVersion = '2.0.2'
@@ -42,13 +41,8 @@ ext {
 
             ],
             playServices: [
-                    all      : "com.google.android.gms:play-services:${playServicesVersion}",
                     analytics: "com.google.android.gms:play-services-analytics:${playServicesVersion}",
-                    auth     : "com.google.android.gms:play-services-auth:${playServicesVersion}",
-                    identity : "com.google.android.gms:play-services-identity:${playServicesVersion}",
-                    location : "com.google.android.gms:play-services-location:${playServicesVersion}",
                     maps     : "com.google.android.gms:play-services-maps:${playServicesVersion}",
-                    plus     : "com.google.android.gms:play-services-plus:${playServicesVersion}",
             ],
 
             app         : [
@@ -60,7 +54,7 @@ ext {
                     daggerCompiler      : "com.google.dagger:dagger-compiler:${daggerVersion}",
                     javaxAnnotations    : "org.glassfish:javax.annotation:${javaxAnnotationsVersion}",
                     okHttp              : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
-                    okHttpLogInterceptor: "com.squareup.okhttp3:logging-interceptor:${okHttpLogInterceptorVersion}",
+                    okHttpLogInterceptor: "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",
                     retrofit            : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
                     retrofitAdapter     : "com.squareup.retrofit2:adapter-rxjava:${retrofitAdapterVersion}",
                     retrofitConverter   : "com.squareup.retrofit2:converter-gson:${retrofitConverterVersion}",
