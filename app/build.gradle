@@ -12,6 +12,7 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'android-apt'
 
 def getGitSha() {
     return 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim();
@@ -74,71 +75,94 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile supportDependencies.appCompat
-    compile supportDependencies.design
-    compile supportDependencies.supportAnnotation
-    compile playServicesDependencies.maps
-    compile playServicesDependencies.analytics
+
+    compile libraries.support.appCompat
+    compile libraries.support.cardView
+    compile libraries.support.design
+    compile libraries.support.recyclerView
+    compile libraries.support.supportAnnotation
+    compile libraries.support.v4
+
+    compile libraries.playServices.all
+    compile libraries.playServices.analytics
+    compile libraries.playServices.auth
+    compile libraries.playServices.identity
+    compile libraries.playServices.location
+    compile libraries.playServices.maps
+    compile libraries.playServices.plus
+
+    //AutoValue
+    provided libraries.app.autoValue
+    apt libraries.app.autoValue
+    apt libraries.app.autoValueParcelable
+
+    //Butterknife
+    compile libraries.app.butterKnife
+    apt libraries.app.butterKnifeCompiler
 
     // Dagger 2
-    compile "com.google.dagger:dagger:$rootProject.daggerVersion"
-    apt "com.google.dagger:dagger-compiler:$rootProject.daggerVersion"
-    provided "org.glassfish:javax.annotation:$rootProject.javaxAnnotationsVersion"
+    compile libraries.app.dagger
+    apt libraries.app.daggerCompiler
+    provided libraries.app.javaxAnnotations
+
+    //Retrofit 2
+    compile libraries.app.retrofit
+    compile libraries.app.retrofitAdapter
+    compile libraries.app.retrofitConverter
 
     // RxJava
-    compile "io.reactivex:rxjava:$rootProject.rxJavaVersion"
-    compile "io.reactivex:rxandroid:$rootProject.rxAndroidVersion"
+    compile libraries.app.rxAndroid
+    compile libraries.app.rxJava
+    compile libraries.app.rxBindings
 
-    // Retrofit 2
-    compile "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    compile "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-    compile "com.squareup.retrofit2:adapter-rxjava:$rootProject.retrofitVersion"
+    compile libraries.app.okHttp
+    compile libraries.app.okHttpLogInterceptor
 
-    compile "com.squareup.okhttp3:okhttp:$rootProject.okHttpVersion"
-    compile "com.squareup.okhttp3:logging-interceptor:$rootProject.okHttpVersion"
-
-    compile "com.jakewharton.timber:timber:$rootProject.timberVersion"
+    //Timber
+    compile libraries.app.timber
 
     // LeakCanary
-    debugCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakCanaryVersion"
-    leakCompile "com.squareup.leakcanary:leakcanary-android:$rootProject.leakCanaryVersion"
-    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakCanaryVersion"
-    testCompile "com.squareup.leakcanary:leakcanary-android-no-op:$rootProject.leakCanaryVersion"
+    debugCompile libraries.tools.leakCanaryNoOp
+    leakCompile libraries.tools.leakCanary
+    releaseCompile libraries.tools.leakCanaryNoOp
+    testCompile libraries.tools.leakCanaryNoOp
 
     // Dependencies for local unit tests
-    testCompile "junit:junit:$rootProject.ext.junitVersion"
-    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
-    testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
-    testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powerMockito"
-    testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powerMockito"
-    testCompile "com.squareup.okhttp3:mockwebserver:$rootProject.okHttpVersion"
-    testCompile "commons-io:commons-io:$rootProject.commonsIoVersion"
+    testCompile libraries.unitTest.commonsIo
+    testCompile libraries.unitTest.hamcrest
+    testCompile libraries.unitTest.junit
+    testCompile libraries.unitTest.mockito
+    testCompile libraries.unitTest.powerMockitoModule
+    testCompile libraries.unitTest.powerMockitoApi
+    testCompile libraries.unitTest.okHttpWebServer
 
     // Android Testing Support Library's runner and rules
-    androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"
-    androidTestCompile "com.android.support.test:rules:$rootProject.ext.runnerVersion"
+    androidTestCompile libraries.runner.runner
+    androidTestCompile libraries.runner.rules
 
     // Espresso UI Testing dependencies.
-    androidTestCompile "com.android.support.test.espresso:espresso-core:$rootProject.ext.espressoVersion"
-    androidTestCompile "com.android.support.test.espresso:espresso-contrib:$rootProject.ext.espressoVersion"
-    androidTestCompile "com.android.support.test.espresso:espresso-intents:$rootProject.ext.espressoVersion"
+    androidTestCompile libraries.uiTest.espressoCore
+    androidTestCompile libraries.uiTest.espressoContrib
+    androidTestCompile libraries.uiTest.espressoIntents
+    androidTestCompile libraries.support.recyclerView
+    androidTestCompile libraries.support.v4
 }
 
-
-/*
-Resolves dependency versions across test and production APKs, specifically, transitive
-dependencies. This is required since Espresso internally has a dependency on support-annotations.
-*/
+/**
+ Resolves dependency versions across test and production APKs, specifically, transitive
+ dependencies. This is required since Espresso internally has a dependency on support-annotations.
+ **/
 configurations.all {
-    resolutionStrategy.force "com.android.support:support-annotations:$rootProject.supportLibraryVersion"
+    resolutionStrategy.force libraries.support.supportAnnotation
 }
 
-/*
-All direct/transitive dependencies shared between your test and production APKs need to be
-excluded from the test APK! This is necessary because both APKs will contain the same classes. Not
-excluding these dependencies from your test configuration will result in an dex pre-verifier error
-at runtime. More info in this tools bug: (https://code.google.com/p/android/issues/detail?id=192497)te
-*/
+/**
+ All direct/transitive dependencies shared between your test and production APKs need to be
+ excluded from the test APK! This is necessary because both APKs will contain the same classes. Not
+ excluding these dependencies from your test configuration will result in an dex pre-verifier error
+ at runtime. More info in this tools bug: (https://code.google.com/p/android/issues/detail?id=192497)te
+ */
+
 configurations.compile.dependencies.each { compileDependency ->
     println "Excluding compile dependency: ${compileDependency.getName()}"
     configurations.androidTestCompile.dependencies.each { androidTestCompileDependency ->
