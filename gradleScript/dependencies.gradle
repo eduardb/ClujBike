@@ -1,43 +1,91 @@
 ext {
-    //Version
-    supportLibraryVersion = '23.2.1'
+    supportLibraryVersion = '24.2.1'
 
-    //Support Libraries dependencies
-    supportDependencies = [
-            supportV4        :    "com.android.support:support-v4:${supportLibraryVersion}",
-            design           :    "com.android.support:design:${supportLibraryVersion}",
-            recyclerView     :    "com.android.support:recyclerview-v7:${supportLibraryVersion}",
-            cardView         :    "com.android.support:cardview-v7:${supportLibraryVersion}",
-            appCompat        :    "com.android.support:appcompat-v7:${supportLibraryVersion}",
-            supportAnnotation:    "com.android.support:support-annotations:${supportLibraryVersion}",
-    ]
+    playServicesVersion = '9.6.1'
 
-    playServicesVersion = '8.4.0'
+    autoValueVersion = '1.2'
+    autoValueParcelableVersion = '0.2.4-rc2'
+    butterKnifeVersion = '8.4.0'
+    daggerVersion = '2.7'
+    javaxAnnotationsVersion = '10.0-b28'
+    okHttpVersion = '3.4.1'
+    retrofitVersion = '2.1.0'
+    retrofitAdapterVersion = '2.0.1'
+    retrofitConverterVersion = '2.0.2'
+    rxAndroidVersion = '1.2.1'
+    rxBindingsVersion = '0.4.0'
+    rxJavaVersion = '1.1.10'
+    timberVersion = '4.3.1'
 
-    playServicesDependencies = [
-            all             :   "com.google.android.gms:play-services:${playServicesVersion}",
-            maps            :   "com.google.android.gms:play-services-maps:${playServicesVersion}",
-            location        :   "com.google.android.gms:play-services-location:${playServicesVersion}",
-            plus            :   "com.google.android.gms:play-services-plus:${playServicesVersion}",
-            identity        :   "com.google.android.gms:play-services-identity:${playServicesVersion}",
-            auth            :   "com.google.android.gms:play-services-auth:${playServicesVersion}",
-            analytics       :   "com.google.android.gms:play-services-analytics:${playServicesVersion}",
-    ]
+    leakCanaryVersion = '1.5'
 
+    commonsIoVersion = '2.4'
+    hamcrestVersion = '1.3'
     junitVersion = '4.12'
     mockitoVersion = '1.10.19'
-    powerMockito = '1.6.2'
-    hamcrestVersion = '1.3'
-    runnerVersion = '0.4.1'
-    rulesVersion = '0.4.1'
-    espressoVersion = '2.2.1'
-    commonsIoVersion = '2.4'
-    daggerVersion = '2.0.2'
-    javaxAnnotationsVersion = '10.0-b28'
-    rxJavaVersion = '1.1.2'
-    rxAndroidVersion = '1.1.0'
-    retrofitVersion = '2.0.0'
-    okHttpVersion = '3.2.0'
-    leakCanaryVersion = '1.4-beta2'
-    timberVersion = '4.1.0'
+    powerMockitoVersion = '1.6.2'
+
+    runnerVersion = '0.5'
+
+    espressoVersion = '2.2.2'
+
+    libraries = [
+            //Support Libraries dependencies
+            support     : [
+                    appCompat        : "com.android.support:appcompat-v7:${supportLibraryVersion}",
+                    cardView         : "com.android.support:cardview-v7:${supportLibraryVersion}",
+                    design           : "com.android.support:design:${supportLibraryVersion}",
+                    recyclerView     : "com.android.support:recyclerview-v7:${supportLibraryVersion}",
+                    supportAnnotation: "com.android.support:support-annotations:${supportLibraryVersion}",
+                    v4               : "com.android.support:support-v4:${supportLibraryVersion}",
+
+            ],
+            playServices: [
+                    analytics: "com.google.android.gms:play-services-analytics:${playServicesVersion}",
+                    maps     : "com.google.android.gms:play-services-maps:${playServicesVersion}",
+            ],
+
+            app         : [
+                    autoValue           : "com.google.auto.value:auto-value:${autoValueVersion}",
+                    autoValueParcelable : "com.ryanharter.auto.value:auto-value-parcel:${autoValueParcelableVersion}",
+                    butterKnife         : "com.jakewharton:butterknife:${butterKnifeVersion}",
+                    butterKnifeCompiler : "com.jakewharton:butterknife-compiler:${butterKnifeVersion}",
+                    dagger              : "com.google.dagger:dagger:${daggerVersion}",
+                    daggerCompiler      : "com.google.dagger:dagger-compiler:${daggerVersion}",
+                    javaxAnnotations    : "org.glassfish:javax.annotation:${javaxAnnotationsVersion}",
+                    okHttp              : "com.squareup.okhttp3:okhttp:${okHttpVersion}",
+                    okHttpLogInterceptor: "com.squareup.okhttp3:logging-interceptor:${okHttpVersion}",
+                    retrofit            : "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+                    retrofitAdapter     : "com.squareup.retrofit2:adapter-rxjava:${retrofitAdapterVersion}",
+                    retrofitConverter   : "com.squareup.retrofit2:converter-gson:${retrofitConverterVersion}",
+                    rxAndroid           : "io.reactivex:rxandroid:${rxAndroidVersion}",
+                    rxBindings          : "com.jakewharton.rxbinding:rxbinding:${rxBindingsVersion}",
+                    rxJava              : "io.reactivex:rxjava:${rxJavaVersion}",
+                    timber              : "com.jakewharton.timber:timber:${timberVersion}",
+            ],
+
+            tools       : [
+                    leakCanary    : "com.squareup.leakcanary:leakcanary-android:${leakCanaryVersion}",
+                    leakCanaryNoOp: "com.squareup.leakcanary:leakcanary-android-no-op:${leakCanaryVersion}",
+            ],
+
+            unitTest    : [
+                    commonsIo         : "commons-io:commons-io:${commonsIoVersion}",
+                    hamcrest          : "org.hamcrest:hamcrest-all:${hamcrestVersion}",
+                    junit             : "junit:junit:${junitVersion}",
+                    mockito           : "org.mockito:mockito-all:${mockitoVersion}",
+                    powerMockitoModule: "org.powermock:powermock-module-junit4:${powerMockitoVersion}",
+                    powerMockitoApi   : "org.powermock:powermock-api-mockito:${powerMockitoVersion}",
+                    okHttpWebServer   : "com.squareup.okhttp3:mockwebserver:${okHttpVersion}",
+            ],
+            runner      : [
+                    runner: "com.android.support.test:runner:${runnerVersion}",
+                    rules : "com.android.support.test:rules:${runnerVersion}",
+            ],
+            uiTest      : [
+                    espressoCore   : "com.android.support.test.espresso:espresso-core:${espressoVersion}",
+                    espressoContrib: "com.android.support.test.espresso:espresso-contrib:${espressoVersion}",
+                    espressoIntents: "com.android.support.test.espresso:espresso-intents:${espressoVersion}",
+            ]
+    ]
 }
