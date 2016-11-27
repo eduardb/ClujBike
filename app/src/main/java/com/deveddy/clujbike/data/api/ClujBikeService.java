@@ -7,6 +7,6 @@ import rx.Observable;
 
 public interface ClujBikeService {
 
-    @GET("Station/Read")
+    @GET("StationApiEntity/Read")
     Observable<StationReadResponse> getStations();
 }
