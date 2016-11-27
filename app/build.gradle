@@ -12,6 +12,7 @@ buildscript {
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'realm-android'
 
 def getGitSha() {
     return 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim();
