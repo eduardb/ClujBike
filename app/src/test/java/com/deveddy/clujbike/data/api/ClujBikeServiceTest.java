@@ -1,7 +1,7 @@
 package com.deveddy.clujbike.data.api;
 
 import com.deveddy.clujbike.data.DataModule;
-import com.deveddy.clujbike.data.api.model.Station;
+import com.deveddy.clujbike.data.api.model.StationApiEntity;
 import com.deveddy.clujbike.data.api.model.StationReadResponse;
 
 import java.util.GregorianCalendar;
@@ -32,16 +32,16 @@ public class ClujBikeServiceTest extends ApiSeviceTest {
         assertEquals(52, stationReadResponse.total);
         assertEquals(52, stationReadResponse.data.size());
 
-        final Station station = stationReadResponse.data.get(0);
+        final StationApiEntity station = stationReadResponse.data.get(0);
         assertEquals("Biblioteca Centrala", station.name);
         assertEquals("Biblioteca Județeană Octavian Goga", station.address);
-        assertEquals(2, station.ocuppiedSpots);
+        assertEquals(2, station.occupiedSpots);
         assertEquals(20, station.emptySpots);
         assertEquals(22, station.maximumNumberOfBikes);
         assertEquals(new GregorianCalendar(2016, 3, 3, 19, 5, 0).getTime(), station.lastSyncDate);
         assertEquals(1, station.idStatus);
-        assertEquals(Station.Status.FUNCTIONAL, station.status);
-        assertEquals(Station.StatusType.ONLINE, station.statusType);
+        assertEquals(StationApiEntity.Status.FUNCTIONAL, station.status);
+        assertEquals(StationApiEntity.StatusType.ONLINE, station.statusType);
         assertEquals(46.777037f, station.latitude, 0.00001f);
         assertEquals(23.615109f, station.longitude, 0.00001f);
         assertEquals(true, station.isValid);
