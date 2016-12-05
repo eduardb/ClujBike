@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.deveddy.clujbike.data.repository.SqlDataBaseContract.Station;
+import com.deveddy.clujbike.data.repository.SqlDatabaseContract.Station;
 import com.deveddy.clujbike.data.repository.mapper.DataMapper;
 import com.deveddy.clujbike.data.repository.models.StationEntity;
 import com.deveddy.clujbike.data.repository.specifications.Specification;
@@ -25,7 +25,6 @@ public class StationSqlRepository implements Repository<StationEntity> {
                                 DataMapper<StationEntity, ContentValues> contentValueDataMapper,
                                 DataMapper<Cursor, StationEntity> cursorDataMapper) {
         this.databaseHelper = databaseHelper;
-
         this.contentValueDataMapper = contentValueDataMapper;
         this.cursorDataMapper = cursorDataMapper;
     }
@@ -59,8 +58,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
         final SqlSpecification sqlSpecification = ((SqlSpecification) specification);
         return Observable.just(item)
                 .map(contentValueDataMapper::mapFrom)
-                .doOnNext(contentValues
-                        -> db.update(STATION_TABLE_NAME,
+                .doOnNext(contentValues -> db.update(STATION_TABLE_NAME,
                         contentValues,
                         sqlSpecification.whereClause(),
                         sqlSpecification.whereArgs()))
@@ -73,12 +71,10 @@ public class StationSqlRepository implements Repository<StationEntity> {
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
         final SqlSpecification sqlSpecification = ((SqlSpecification) specification);
         return Completable.fromAction(
-                () -> {
-                    db.delete(STATION_TABLE_NAME,
-                            sqlSpecification.whereClause(),
-                            sqlSpecification.whereArgs());
-                    db.close();
-                });
+                () -> db.delete(STATION_TABLE_NAME,
+                        sqlSpecification.whereClause(),
+                        sqlSpecification.whereArgs()))
+                .doOnCompleted(db::close);
     }
 
     @Override
@@ -86,7 +82,10 @@ public class StationSqlRepository implements Repository<StationEntity> {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         SqlSpecification sqlSpecification = ((SqlSpecification) specification);
         return Observable
-                .fromCallable(() -> db.rawQuery(sqlSpecification.toString(), sqlSpecification.whereArgs()))
+                .fromCallable(() -> db.query(STATION_TABLE_NAME,
+                        sqlSpecification.whereArgs(),
+                        sqlSpecification.whereClause(),
+                        null, null, null, null))
                 .map((response) -> cursorDataMapper.mapFrom(response))
                 .doOnCompleted(db::close);
     }
