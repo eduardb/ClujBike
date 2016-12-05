@@ -11,6 +11,7 @@ public class StationContentValueDataMapper implements DataMapper<StationEntity, 
     @Override
     public ContentValues mapFrom(StationEntity station) {
         ContentValues cv = new ContentValues();
+        cv.put(Station._ID, station.id());
         cv.put(Station.COLUMN_NAME, station.name());
         cv.put(Station.COLUMN_ADDRESS, station.address());
         cv.put(Station.COLUMN_OCCUPIED_SPOTS, station.occupiedSpots());
