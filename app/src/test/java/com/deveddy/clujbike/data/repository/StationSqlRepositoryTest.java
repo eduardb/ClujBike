@@ -186,9 +186,11 @@ public class StationSqlRepositoryTest {
                 .subscribe(new TestSubscriber<>());
 
         InOrder inOrder = inOrder(db);
-        inOrder.verify(db).rawQuery(
-                specificationSql.toString(),
-                specificationSql.whereArgs());
+        inOrder.verify(db).query(
+                TABLE,
+                specificationSql.whereArgs(),
+                specificationSql.whereClause(),
+                null, null, null, null);
         verify(cursorDataMapper).mapFrom(any(Cursor.class));
         inOrder.verify(db).close();
     }
@@ -197,9 +199,11 @@ public class StationSqlRepositoryTest {
     public void givenSpecification_whenQueryingRepositoryUnsuccessfully_thenThrowError() {
         Error error = new Error("A wild error has occurred!");
         TestSubscriber testSubscriber = new TestSubscriber<>();
-        when(db.rawQuery(
-                specificationSql.toString(),
-                specificationSql.whereArgs())).thenThrow(error);
+        when(db.query(
+                TABLE,
+                specificationSql.whereArgs(),
+                specificationSql.whereClause(),
+                null, null, null, null)).thenThrow(error);
 
         sut.query(specificationSql)
                 .subscribeOn(Schedulers.immediate())
