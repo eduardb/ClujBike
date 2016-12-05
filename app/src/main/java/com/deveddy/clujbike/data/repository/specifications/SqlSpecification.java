@@ -5,7 +5,4 @@ public interface SqlSpecification extends Specification {
     String whereClause();
 
     String[] whereArgs();
-
-    String toString();
-
 }
