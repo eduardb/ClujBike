@@ -13,7 +13,7 @@ public class StationApiEntity {
     @SerializedName("Address")
     public String address;
 
-    @SerializedName("OcuppiedSpots")
+    @SerializedName("OccupiedSpots")
     public int occupiedSpots;
 
     @SerializedName("EmptySpots")

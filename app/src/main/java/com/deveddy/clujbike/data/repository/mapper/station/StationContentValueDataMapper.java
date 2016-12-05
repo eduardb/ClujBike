@@ -2,7 +2,7 @@ package com.deveddy.clujbike.data.repository.mapper.station;
 
 import android.content.ContentValues;
 
-import com.deveddy.clujbike.data.repository.SqlDataBaseContract.Station;
+import com.deveddy.clujbike.data.repository.SqlDatabaseContract.Station;
 import com.deveddy.clujbike.data.repository.models.StationEntity;
 import com.deveddy.clujbike.data.repository.mapper.DataMapper;
 

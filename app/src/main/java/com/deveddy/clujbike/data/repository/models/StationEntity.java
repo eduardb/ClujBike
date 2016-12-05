@@ -1,7 +1,5 @@
 package com.deveddy.clujbike.data.repository.models;
 
-import android.support.annotation.Nullable;
-
 import com.google.auto.value.AutoValue;
 
 import java.util.Date;

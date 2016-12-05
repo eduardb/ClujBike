@@ -8,7 +8,7 @@ import com.deveddy.clujbike.data.repository.mapper.DataMapper;
 import java.util.Date;
 
 import static android.provider.BaseColumns._ID;
-import static com.deveddy.clujbike.data.repository.SqlDataBaseContract.Station.*;
+import static com.deveddy.clujbike.data.repository.SqlDatabaseContract.Station.*;
 
 public class StationCursorDataMapper implements DataMapper<Cursor, StationEntity> {
 

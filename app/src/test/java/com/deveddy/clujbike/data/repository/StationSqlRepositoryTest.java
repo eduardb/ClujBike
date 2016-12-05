@@ -143,7 +143,6 @@ public class StationSqlRepositoryTest {
 
         verify(contentValuesDataMapper).mapFrom(any(StationEntity.class));
         testSubscriber.assertError(error);
-        //// TODO: 24.11.2016  
     }
 
     @Test
