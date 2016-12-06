@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.deveddy.clujbike.data.repository.mapper.DataMapper;
+import com.deveddy.clujbike.data.repository.mapper.Mapper;
 import com.deveddy.clujbike.data.repository.models.StationEntity;
 import com.deveddy.clujbike.data.repository.specifications.Specification;
 import com.deveddy.clujbike.data.repository.specifications.SqlSpecification;
@@ -37,9 +37,9 @@ public class StationSqlRepositoryTest {
     private StationSqlRepository sut;
 
     @Mock
-    DataMapper<StationEntity, ContentValues> contentValuesDataMapper;
+    Mapper<StationEntity, ContentValues> contentValuesDataMapper;
     @Mock
-    DataMapper<Cursor, StationEntity> cursorDataMapper;
+    Mapper<Cursor, StationEntity> cursorDataMapper;
     @Mock
     DatabaseHelper dataBaseHelper;
     @Mock
@@ -72,7 +72,7 @@ public class StationSqlRepositoryTest {
                 .observeOn(Schedulers.immediate())
                 .subscribe(new TestSubscriber<StationEntity>());
 
-        verify(contentValuesDataMapper, times(2)).mapFrom(any(StationEntity.class));
+        verify(contentValuesDataMapper, times(2)).from(any(StationEntity.class));
         InOrder inOrder = inOrder(db);
         inOrder.verify(db).beginTransaction();
         inOrder.verify(db, times(2)).insert(
@@ -106,14 +106,14 @@ public class StationSqlRepositoryTest {
     @Test
     public void givenItemAndSpecification_whenUpdatingItemSuccessfully_thenExpectedMethodsAreCalled() {
         StationEntity item = givenStationEntity("Columbus Circle", 3);
-        when(contentValuesDataMapper.mapFrom(item)).thenReturn(contentValuesItem);
+        when(contentValuesDataMapper.from(item)).thenReturn(contentValuesItem);
 
         sut.update(item, specificationSql)
                 .subscribeOn(Schedulers.immediate())
                 .observeOn(Schedulers.immediate())
                 .subscribe(new TestSubscriber<StationEntity>());
 
-        verify(contentValuesDataMapper).mapFrom(any(StationEntity.class));
+        verify(contentValuesDataMapper).from(any(StationEntity.class));
         InOrder inOrder = inOrder(db);
         inOrder.verify(db).update(
                 TABLE,
@@ -128,7 +128,7 @@ public class StationSqlRepositoryTest {
         StationEntity item = givenStationEntity("Columbus Circle", 3);
         TestSubscriber testSubscriber = new TestSubscriber<>();
         Error error = new Error("A wild error has occurred!");
-        when(contentValuesDataMapper.mapFrom(item)).thenReturn(contentValuesItem);
+        when(contentValuesDataMapper.from(item)).thenReturn(contentValuesItem);
         when(db.update(
                 TABLE,
                 contentValuesItem,
@@ -141,7 +141,7 @@ public class StationSqlRepositoryTest {
                 .observeOn(Schedulers.immediate())
                 .subscribe(testSubscriber);
 
-        verify(contentValuesDataMapper).mapFrom(any(StationEntity.class));
+        verify(contentValuesDataMapper).from(any(StationEntity.class));
         testSubscriber.assertError(error);
     }
 
@@ -191,7 +191,7 @@ public class StationSqlRepositoryTest {
                 specificationSql.whereArgs(),
                 specificationSql.whereClause(),
                 null, null, null, null);
-        verify(cursorDataMapper).mapFrom(any(Cursor.class));
+        verify(cursorDataMapper).from(any(Cursor.class));
         inOrder.verify(db).close();
     }
 
@@ -242,7 +242,7 @@ public class StationSqlRepositoryTest {
 
     private void setupMapperFor(List<StationEntity> stationEntities, List<ContentValues> contentValues) {
         for (int i = 0; i < stationEntities.size(); i++) {
-            when(contentValuesDataMapper.mapFrom(stationEntities.get(i)))
+            when(contentValuesDataMapper.from(stationEntities.get(i)))
                     .thenReturn(contentValues.get(i));
         }
     }

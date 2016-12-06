@@ -15,12 +15,12 @@ import static junit.framework.Assert.assertEquals;
 
 
 @RunWith(AndroidJUnit4.class)
-public class StationContentValueDataMapperTest {
-    StationContentValueDataMapper sut;
+public class StationContentValueMapperTest {
+    StationContentValueMapper sut;
 
     @Before
     public void setUp() {
-        sut = new StationContentValueDataMapper();
+        sut = new StationContentValueMapper();
     }
 
     @Test
@@ -28,7 +28,7 @@ public class StationContentValueDataMapperTest {
         StationEntity station = givenStationEntity("Union Square", 12);
         ContentValues cv;
 
-        cv = sut.mapFrom(station);
+        cv = sut.from(station);
 
         assertEquals(cv.getAsInteger("_id").intValue(), station.id());
         assertEquals(cv.getAsString("name"), station.name());

@@ -15,12 +15,12 @@ import java.util.Date;
 import static junit.framework.Assert.assertEquals;
 
 @RunWith(AndroidJUnit4.class)
-public class StationCursorDataMapperTest {
-    StationCursorDataMapper sut;
+public class StationCursorMapperTest {
+    StationCursorMapper sut;
 
     @Before
     public void setUp() {
-        sut = new StationCursorDataMapper();
+        sut = new StationCursorMapper();
     }
 
     @Test
@@ -28,7 +28,7 @@ public class StationCursorDataMapperTest {
         Cursor cursor = givenCursor();
         StationEntity station;
 
-        station = sut.mapFrom(cursor);
+        station = sut.from(cursor);
 
         assertEquals(station.id(), cursor.getInt(getIndex(cursor, "_id")));
         assertEquals(station.name(), cursor.getString(getIndex(cursor, "name")));

@@ -5,7 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.deveddy.clujbike.data.repository.SqlDatabaseContract.Station;
-import com.deveddy.clujbike.data.repository.mapper.DataMapper;
+import com.deveddy.clujbike.data.repository.mapper.Mapper;
 import com.deveddy.clujbike.data.repository.models.StationEntity;
 import com.deveddy.clujbike.data.repository.specifications.Specification;
 import com.deveddy.clujbike.data.repository.specifications.SqlSpecification;
@@ -18,14 +18,14 @@ public class StationSqlRepository implements Repository<StationEntity> {
     static final String STATION_TABLE_NAME = Station.TABLE_NAME;
 
     private final DatabaseHelper databaseHelper;
-    private final DataMapper<StationEntity, ContentValues> contentValueDataMapper;
-    private final DataMapper<Cursor, StationEntity> cursorDataMapper;
+    private final Mapper<StationEntity, ContentValues> contentValueMapper;
+    private final Mapper<Cursor, StationEntity> cursorDataMapper;
 
     public StationSqlRepository(DatabaseHelper databaseHelper,
-                                DataMapper<StationEntity, ContentValues> contentValueDataMapper,
-                                DataMapper<Cursor, StationEntity> cursorDataMapper) {
+                                Mapper<StationEntity, ContentValues> contentValueMapper,
+                                Mapper<Cursor, StationEntity> cursorDataMapper) {
         this.databaseHelper = databaseHelper;
-        this.contentValueDataMapper = contentValueDataMapper;
+        this.contentValueMapper = contentValueMapper;
         this.cursorDataMapper = cursorDataMapper;
     }
 
@@ -34,7 +34,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
         return Observable.from(items)
                 .doOnSubscribe(db::beginTransaction)
-                .map(contentValueDataMapper::mapFrom)
+                .map(contentValueMapper::from)
                 .doOnNext(contentValues -> db.insert(STATION_TABLE_NAME, null, contentValues))
                 .doOnError(throwable -> closeTransactionWithoutSuccess(db))
                 .doOnCompleted(() -> closeTransactionWithSuccess(db))
@@ -57,7 +57,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
         final SqlSpecification sqlSpecification = ((SqlSpecification) specification);
         return Observable.just(item)
-                .map(contentValueDataMapper::mapFrom)
+                .map(contentValueMapper::from)
                 .doOnNext(contentValues -> db.update(STATION_TABLE_NAME,
                         contentValues,
                         sqlSpecification.whereClause(),
@@ -86,7 +86,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
                         sqlSpecification.whereArgs(),
                         sqlSpecification.whereClause(),
                         null, null, null, null))
-                .map((response) -> cursorDataMapper.mapFrom(response))
+                .map((response) -> cursorDataMapper.from(response))
                 .doOnCompleted(db::close);
     }
 }

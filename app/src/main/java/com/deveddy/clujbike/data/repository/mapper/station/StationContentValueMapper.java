@@ -3,13 +3,13 @@ package com.deveddy.clujbike.data.repository.mapper.station;
 import android.content.ContentValues;
 
 import com.deveddy.clujbike.data.repository.SqlDatabaseContract.Station;
+import com.deveddy.clujbike.data.repository.mapper.Mapper;
 import com.deveddy.clujbike.data.repository.models.StationEntity;
-import com.deveddy.clujbike.data.repository.mapper.DataMapper;
 
-public class StationContentValueDataMapper implements DataMapper<StationEntity, ContentValues> {
+public class StationContentValueMapper implements Mapper<StationEntity, ContentValues> {
 
     @Override
-    public ContentValues mapFrom(StationEntity station) {
+    public ContentValues from(StationEntity station) {
         ContentValues cv = new ContentValues();
         cv.put(Station._ID, station.id());
         cv.put(Station.COLUMN_NAME, station.name());
