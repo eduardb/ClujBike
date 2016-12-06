@@ -5,7 +5,7 @@ import android.provider.BaseColumns;
 public interface SqlDatabaseContract {
 
     int DATA_BASE_VERSION = 1;
-    String DATA_BASE_NAME = "clujbike.db";
+    String DATABASE_NAME = "clujbike.db";
 
     String TEXT_TYPE = " TEXT";
     String INTEGER_TYPE = " INTEGER";
