@@ -29,17 +29,6 @@ public class StationSqlRepository implements Repository<StationEntity> {
         this.cursorDataMapper = cursorDataMapper;
     }
 
-    private void closeTransactionWithoutSuccess(SQLiteDatabase db) {
-        db.endTransaction();
-        db.close();
-    }
-
-    private void closeTransactionWithSuccess(SQLiteDatabase db) {
-        db.setTransactionSuccessful();
-        db.endTransaction();
-        db.close();
-    }
-
     @Override
     public Completable add(Iterable<StationEntity> items) {
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
@@ -50,6 +39,17 @@ public class StationSqlRepository implements Repository<StationEntity> {
                 .doOnError(throwable -> closeTransactionWithoutSuccess(db))
                 .doOnCompleted(() -> closeTransactionWithSuccess(db))
                 .toCompletable();
+    }
+
+    private void closeTransactionWithoutSuccess(SQLiteDatabase db) {
+        db.endTransaction();
+        db.close();
+    }
+
+    private void closeTransactionWithSuccess(SQLiteDatabase db) {
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        db.close();
     }
 
     @Override
