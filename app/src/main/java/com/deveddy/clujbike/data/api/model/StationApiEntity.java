@@ -3,7 +3,6 @@ package com.deveddy.clujbike.data.api.model;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
-import java.util.List;
 
 public class StationApiEntity {
 
@@ -13,7 +12,7 @@ public class StationApiEntity {
     @SerializedName("Address")
     public String address;
 
-    @SerializedName("OccupiedSpots")
+    @SerializedName("OcuppiedSpots")
     public int occupiedSpots;
 
     @SerializedName("EmptySpots")
