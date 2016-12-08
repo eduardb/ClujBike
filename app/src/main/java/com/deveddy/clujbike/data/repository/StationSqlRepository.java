@@ -15,7 +15,7 @@ import rx.Observable;
 
 public class StationSqlRepository implements Repository<StationEntity> {
 
-    static final String STATION_TABLE_NAME = Station.TABLE_NAME;
+    static final String TABLE = Station.TABLE_NAME;
 
     private final DatabaseHelper databaseHelper;
     private final Mapper<StationEntity, ContentValues> contentValueMapper;
@@ -35,7 +35,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
         return Observable.from(items)
                 .doOnSubscribe(db::beginTransaction)
                 .map(contentValueMapper::from)
-                .doOnNext(contentValues -> db.insert(STATION_TABLE_NAME, null, contentValues))
+                .doOnNext(contentValues -> db.insert(TABLE, null, contentValues))
                 .doOnError(throwable -> closeTransactionWithoutSuccess(db))
                 .doOnCompleted(() -> closeTransactionWithSuccess(db))
                 .toCompletable();
@@ -58,7 +58,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
         final SqlSpecification sqlSpecification = ((SqlSpecification) specification);
         return Observable.just(item)
                 .map(contentValueMapper::from)
-                .doOnNext(contentValues -> db.update(STATION_TABLE_NAME,
+                .doOnNext(contentValues -> db.update(TABLE,
                         contentValues,
                         sqlSpecification.whereClause(),
                         sqlSpecification.whereArgs()))
@@ -72,7 +72,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
         final SQLiteDatabase db = databaseHelper.getWritableDatabase();
         final SqlSpecification sqlSpecification = ((SqlSpecification) specification);
         return Completable.fromAction(
-                () -> db.delete(STATION_TABLE_NAME,
+                () -> db.delete(TABLE,
                         sqlSpecification.whereClause(),
                         sqlSpecification.whereArgs()))
                 .doOnError((throwable) -> db.close())
@@ -84,7 +84,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
         SqlSpecification sqlSpecification = ((SqlSpecification) specification);
         return Observable
-                .fromCallable(() -> db.query(STATION_TABLE_NAME,
+                .fromCallable(() -> db.query(TABLE,
                         sqlSpecification.whereArgs(),
                         sqlSpecification.whereClause(),
                         null, null, null, null))
