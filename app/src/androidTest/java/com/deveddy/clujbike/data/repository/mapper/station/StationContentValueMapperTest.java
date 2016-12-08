@@ -46,6 +46,17 @@ public class StationContentValueMapperTest {
         assertEquals(cv.getAsBoolean("customIsValid").booleanValue(), station.customValid());
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void givenStationIncorrectlyBuilt_whenMappingStationToContentValuesUnsuccessfully_thenErrorIsExpected() {
+        StationEntity station = givenStationEntity(null, 12);
+        sut.from(station);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void givenStationEmpty_whenMappingStationToContentValues_thenErrorIsExpected() {
+        sut.from(null);
+    }
+
     private StationEntity givenStationEntity(String name, int id) {
         return StationEntity.builder()
                 .name(name)
