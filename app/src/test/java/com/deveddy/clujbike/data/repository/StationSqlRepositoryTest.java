@@ -49,7 +49,7 @@ public class StationSqlRepositoryTest {
     @Mock
     SpecificationSql specificationSql;
 
-    private String TABLE = StationSqlRepository.STATION_TABLE_NAME;
+    private String TABLE = StationSqlRepository.TABLE;
     private List<ContentValues> contentValues = Arrays.asList(
             contentValuesItem,
             contentValuesItem);
