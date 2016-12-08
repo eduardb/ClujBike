@@ -7,7 +7,7 @@ import java.util.List;
 public class StationReadResponse {
 
     @SerializedName("Data")
-    public List<Station> data;
+    public List<StationApiEntity> data;
 
     @SerializedName("Total")
     public int total;

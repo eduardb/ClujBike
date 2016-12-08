@@ -1,10 +1,10 @@
 ext {
-    supportLibraryVersion = '24.2.1'
+    supportLibraryVersion = '25.0.1'
 
     playServicesVersion = '9.6.1'
 
     autoValueVersion = '1.2'
-    autoValueParcelableVersion = '0.2.4-rc2'
+    autoValueParcelableVersion = '0.2.5'
     butterKnifeVersion = '8.4.0'
     daggerVersion = '2.7'
     javaxAnnotationsVersion = '10.0-b28'
