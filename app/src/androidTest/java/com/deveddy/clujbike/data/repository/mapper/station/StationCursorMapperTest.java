@@ -26,7 +26,7 @@ public class StationCursorMapperTest {
 
     @Test
     public void givenCursor_whenMappingToStationEntitySuccessfully_thenFieldsAreEqual() {
-        Cursor cursor = givenCursor(false);
+        Cursor cursor = givenCursor(true);
         StationEntity station;
 
         station = sut.from(cursor);
@@ -47,12 +47,12 @@ public class StationCursorMapperTest {
         assertEquals(station.customValid(), getBooleanValue(cursor, "customIsValid"));
     }
 
-    private Cursor givenCursor(boolean noRows) {
+    private Cursor givenCursor(boolean hasRows) {
         String[] columns = new String[]{"_id", "name", "address", "occupiedSpots",
                 "emptySpots", "maximumNumberOfBikes", "lastSyncDate", "idStatus", "status",
                 "statusType", "latitude", "longitude", "isValid", "customIsValid"};
         MatrixCursor cursor = new MatrixCursor(columns);
-        if (!noRows) {
+        if (hasRows) {
             cursor.addRow(new Object[]{12, "Union Square", "Manhattan", 2, 4, 6,
                     System.currentTimeMillis(), 0, 0, 1, 35.55f, 34.44f, 0, 1});
             cursor.moveToFirst();
@@ -69,8 +69,8 @@ public class StationCursorMapperTest {
     }
 
     @Test(expected = CursorIndexOutOfBoundsException.class)
-    public void givenCursorWithNoRows_whenMappingToStation_thenErrorIsExpected() {
-        Cursor cursor = givenCursor(true);
+    public void givenCursorDoesNotHaveRows_whenMappingToStation_thenErrorIsExpected() {
+        Cursor cursor = givenCursor(false);
         sut.from(cursor);
     }
 
