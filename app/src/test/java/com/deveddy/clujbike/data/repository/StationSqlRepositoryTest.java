@@ -53,7 +53,9 @@ public class StationSqlRepositoryTest {
     private List<ContentValues> contentValues = Arrays.asList(
             contentValuesItem,
             contentValuesItem);
-    private interface SpecificationSql extends SqlSpecification, Specification {}
+
+    private interface SpecificationSql extends SqlSpecification, Specification {
+    }
 
     @Before
     public void setUp() throws Exception {
@@ -143,6 +145,7 @@ public class StationSqlRepositoryTest {
 
         verify(contentValuesDataMapper).from(any(StationEntity.class));
         testSubscriber.assertError(error);
+        verify(db).close();
     }
 
     @Test
@@ -176,6 +179,7 @@ public class StationSqlRepositoryTest {
                 .subscribe(testSubscriber);
 
         testSubscriber.assertError(error);
+        verify(db).close();
     }
 
     @Test
@@ -211,6 +215,7 @@ public class StationSqlRepositoryTest {
                 .subscribe(testSubscriber);
 
         testSubscriber.assertError(error);
+        verify(db).close();
     }
 
     private StationEntity givenStationEntity(String name, int id) {

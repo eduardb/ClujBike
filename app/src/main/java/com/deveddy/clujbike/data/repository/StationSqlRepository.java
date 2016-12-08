@@ -62,6 +62,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
                         contentValues,
                         sqlSpecification.whereClause(),
                         sqlSpecification.whereArgs()))
+                .doOnError((throwable) -> db.close())
                 .doOnCompleted(db::close)
                 .toCompletable();
     }
@@ -74,6 +75,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
                 () -> db.delete(STATION_TABLE_NAME,
                         sqlSpecification.whereClause(),
                         sqlSpecification.whereArgs()))
+                .doOnError((throwable) -> db.close())
                 .doOnCompleted(db::close);
     }
 
@@ -87,6 +89,7 @@ public class StationSqlRepository implements Repository<StationEntity> {
                         sqlSpecification.whereClause(),
                         null, null, null, null))
                 .map((response) -> cursorDataMapper.from(response))
+                .doOnError((throwable) -> db.close())
                 .doOnCompleted(db::close);
     }
 }
