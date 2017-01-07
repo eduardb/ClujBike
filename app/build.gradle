@@ -127,8 +127,6 @@ dependencies {
     testCompile libraries.unitTest.hamcrest
     testCompile libraries.unitTest.junit
     testCompile libraries.unitTest.mockito
-    testCompile libraries.unitTest.powerMockitoModule
-    testCompile libraries.unitTest.powerMockitoApi
     testCompile libraries.unitTest.okHttpWebServer
 
     // Android Testing Support Library's runner and rules
