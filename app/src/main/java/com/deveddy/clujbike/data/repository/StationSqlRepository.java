@@ -85,10 +85,11 @@ public class StationSqlRepository implements Repository<StationEntity> {
         SqlSpecification sqlSpecification = ((SqlSpecification) specification);
         return Observable
                 .fromCallable(() -> db.query(TABLE,
-                        sqlSpecification.whereArgs(),
+                        null,
                         sqlSpecification.whereClause(),
-                        null, null, null, null))
-                .map((response) -> cursorDataMapper.from(response))
+                        sqlSpecification.whereArgs(),
+                        null, null, null))
+                .map(cursorDataMapper::from)
                 .doOnError((throwable) -> db.close())
                 .doOnCompleted(db::close);
     }

@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,11 +24,10 @@ import java.util.List;
 import rx.observers.TestSubscriber;
 import rx.schedulers.Schedulers;
 
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -45,6 +44,8 @@ public class StationSqlRepositoryTest {
     @Mock
     SQLiteDatabase db;
     @Mock
+    Cursor cursor;
+    @Mock
     ContentValues contentValuesItem;
     @Mock
     SpecificationSql specificationSql;
@@ -59,9 +60,18 @@ public class StationSqlRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        sut = new StationSqlRepository(dataBaseHelper, contentValuesDataMapper, cursorDataMapper);
         when(dataBaseHelper.getWritableDatabase()).thenReturn(db);
         when(dataBaseHelper.getReadableDatabase()).thenReturn(db);
+        when(db.query(
+                eq(TABLE),
+                isNull(),
+                isNull(),
+                isNull(),
+                isNull(),
+                isNull(),
+                isNull())
+        ).thenReturn(cursor);
+        sut = new StationSqlRepository(dataBaseHelper, contentValuesDataMapper, cursorDataMapper);
     }
 
     @Test
@@ -74,13 +84,18 @@ public class StationSqlRepositoryTest {
                 .observeOn(Schedulers.immediate())
                 .subscribe(new TestSubscriber<StationEntity>());
 
-        verify(contentValuesDataMapper, times(2)).from(any(StationEntity.class));
-        InOrder inOrder = inOrder(db);
+        InOrder inOrder = inOrder(db, contentValuesDataMapper);
         inOrder.verify(db).beginTransaction();
-        inOrder.verify(db, times(2)).insert(
-                eq(TABLE),
-                eq(null),
-                any(ContentValues.class));
+        inOrder.verify(contentValuesDataMapper).from(stationEntities.get(0));
+        inOrder.verify(db).insert(
+                TABLE,
+                null,
+                contentValues.get(0));
+        inOrder.verify(contentValuesDataMapper).from(stationEntities.get(1));
+        inOrder.verify(db).insert(
+                TABLE,
+                null,
+                contentValues.get(1));
         inOrder.verify(db).setTransactionSuccessful();
         inOrder.verify(db).endTransaction();
         inOrder.verify(db).close();
@@ -91,7 +106,7 @@ public class StationSqlRepositoryTest {
         List<StationEntity> stationEntities = givenStationEntities();
         setupMapperFor(stationEntities, contentValues);
         Error error = new Error("A wild error has occurred!");
-        when(db.insert(anyString(), anyString(), any(ContentValues.class))).thenThrow(error);
+        when(db.insert(TABLE, null, contentValues.get(0))).thenThrow(error);
 
         TestSubscriber<StationEntity> testSubscriber = new TestSubscriber<>();
         sut.add(stationEntities)
@@ -100,6 +115,7 @@ public class StationSqlRepositoryTest {
                 .subscribe(testSubscriber);
 
         InOrder inOrder = inOrder(db);
+        inOrder.verify(db).beginTransaction();
         inOrder.verify(db).endTransaction();
         inOrder.verify(db).close();
         testSubscriber.assertError(error);
@@ -189,13 +205,14 @@ public class StationSqlRepositoryTest {
                 .observeOn(Schedulers.immediate())
                 .subscribe(new TestSubscriber<>());
 
-        InOrder inOrder = inOrder(db);
+        InOrder inOrder = inOrder(db, cursorDataMapper);
         inOrder.verify(db).query(
                 TABLE,
-                specificationSql.whereArgs(),
+                null,
                 specificationSql.whereClause(),
-                null, null, null, null);
-        verify(cursorDataMapper).from(any(Cursor.class));
+                specificationSql.whereArgs(),
+                null, null, null);
+        inOrder.verify(cursorDataMapper).from(cursor);
         inOrder.verify(db).close();
     }
 
@@ -242,7 +259,6 @@ public class StationSqlRepositoryTest {
         items.add(givenStationEntity("Union Square", 1));
         items.add(givenStationEntity("Herald Square", 2));
         return items;
-
     }
 
     private void setupMapperFor(List<StationEntity> stationEntities, List<ContentValues> contentValues) {
