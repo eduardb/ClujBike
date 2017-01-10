@@ -33,9 +33,9 @@ public class StationRealmRepositoryTest {
     private StationRealmRepository sut;
 
     @Mock
-    StationEntityRealmMapper toRealmMapper;
+    StationEntityRealmMapper entityToRealmMapper;
     @Mock
-    StationRealmEntityMapper toEntityMapper;
+    StationRealmEntityMapper realmToEntityMapper;
     @Mock
     RealmProvider realmProvider;
     @Mock
@@ -59,7 +59,7 @@ public class StationRealmRepositoryTest {
 
     @Before
     public void setUp() throws Exception {
-        sut = new StationRealmRepository(realmProvider, toRealmMapper, toEntityMapper);
+        sut = new StationRealmRepository(realmProvider, entityToRealmMapper, realmToEntityMapper);
         when(realmProvider.provide()).thenReturn(realm);
     }
 
@@ -73,11 +73,11 @@ public class StationRealmRepositoryTest {
                 .observeOn(Schedulers.immediate())
                 .subscribe(new TestSubscriber<StationEntity>());
 
-        InOrder inOrder = inOrder(realm, toRealmMapper);
+        InOrder inOrder = inOrder(realm, entityToRealmMapper);
         inOrder.verify(realm).beginTransaction();
-        inOrder.verify(toRealmMapper).from(stationEntityList.get(0));
+        inOrder.verify(entityToRealmMapper).from(stationEntityList.get(0));
         inOrder.verify(realm).insert(stationRealmList.get(0));
-        inOrder.verify(toRealmMapper).from(stationEntityList.get(1));
+        inOrder.verify(entityToRealmMapper).from(stationEntityList.get(1));
         inOrder.verify(realm).insert(stationRealmList.get(1));
         inOrder.verify(realm).commitTransaction();
         inOrder.verify(realm).close();
@@ -114,9 +114,9 @@ public class StationRealmRepositoryTest {
                 .observeOn(Schedulers.immediate())
                 .subscribe(new TestSubscriber<StationEntity>());
 
-        InOrder inOrder = inOrder(realm, toRealmMapper, realmSpecification);
+        InOrder inOrder = inOrder(realm, entityToRealmMapper, realmSpecification);
         inOrder.verify(realm).beginTransaction();
-        inOrder.verify(toRealmMapper).from(stationEntity);
+        inOrder.verify(entityToRealmMapper).from(stationEntity);
         inOrder.verify(realm).copyToRealmOrUpdate(newStationRealm);
         inOrder.verify(realm).commitTransaction();
         inOrder.verify(realm).close();
@@ -136,9 +136,9 @@ public class StationRealmRepositoryTest {
                 .observeOn(Schedulers.immediate())
                 .subscribe(testSubscriber);
 
-        InOrder inOrder = inOrder(realm, toRealmMapper);
+        InOrder inOrder = inOrder(realm, entityToRealmMapper);
         inOrder.verify(realm).beginTransaction();
-        inOrder.verify(toRealmMapper).from(stationEntity);
+        inOrder.verify(entityToRealmMapper).from(stationEntity);
         inOrder.verify(realm).cancelTransaction();
         inOrder.verify(realm).close();
         testSubscriber.assertError(error);
@@ -153,9 +153,9 @@ public class StationRealmRepositoryTest {
                 .observeOn(Schedulers.immediate())
                 .subscribe(new TestSubscriber<>());
 
-        InOrder inOrder = inOrder(realm, toEntityMapper);
+        InOrder inOrder = inOrder(realm, realmToEntityMapper);
         inOrder.verify(realm).beginTransaction();
-        inOrder.verify(toEntityMapper).from(oldStationRealm);
+        inOrder.verify(realmToEntityMapper).from(oldStationRealm);
         inOrder.verify(realm).commitTransaction();
         inOrder.verify(realm).close();
     }
@@ -206,7 +206,7 @@ public class StationRealmRepositoryTest {
     }
 
     private void setUpMapperForItem(StationEntity stationEntity, StationRealm stationRealm) {
-        when(toRealmMapper.from(stationEntity)).thenReturn(stationRealm);
+        when(entityToRealmMapper.from(stationEntity)).thenReturn(stationRealm);
     }
 
     private void setUpMapperFor(List<StationEntity> stationEntityList,

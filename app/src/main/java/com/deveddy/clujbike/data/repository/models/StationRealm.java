@@ -146,8 +146,8 @@ public class StationRealm extends RealmObject {
         return isValid;
     }
 
-    public void setValid(boolean isValid) {
-        isValid = isValid;
+    public void setStationValid(boolean isValid) {
+        this.isValid = isValid;
     }
 
     public boolean isCustomIsValid() {

@@ -11,18 +11,19 @@ import rx.Completable;
 import rx.Observable;
 
 public class StationRealmRepository implements Repository<StationEntity> {
+
     private final RealmProvider realmProvider;
-    private final Mapper<StationEntity, StationRealm> toRealmMapper;
-    private final Mapper<StationRealm, StationEntity> toEntityMapper;
+    private final Mapper<StationEntity, StationRealm> entityToRealmMapper;
+    private final Mapper<StationRealm, StationEntity> realmToEntityMapper;
 
     public StationRealmRepository(
             RealmProvider realmProvider,
-            Mapper<StationEntity, StationRealm> toRealmMapper,
-            Mapper<StationRealm, StationEntity> toEntityMapper) {
+            Mapper<StationEntity, StationRealm> entityToRealmMapper,
+            Mapper<StationRealm, StationEntity> realmToEntityMapper) {
 
         this.realmProvider = realmProvider;
-        this.toRealmMapper = toRealmMapper;
-        this.toEntityMapper = toEntityMapper;
+        this.entityToRealmMapper = entityToRealmMapper;
+        this.realmToEntityMapper = realmToEntityMapper;
     }
 
     @Override
@@ -33,7 +34,7 @@ public class StationRealmRepository implements Repository<StationEntity> {
                     realmWrapper.realm = realmProvider.provide();
                     realmWrapper.realm.beginTransaction();
                 })
-                .map(toRealmMapper::from)
+                .map(entityToRealmMapper::from)
                 .doOnNext(stationRealm -> realmWrapper.realm.insert(stationRealm))
                 .doOnError(throwable -> {
                     realmWrapper.realm.cancelTransaction();
@@ -48,14 +49,14 @@ public class StationRealmRepository implements Repository<StationEntity> {
 
     @Override
     public Completable update(StationEntity item, Specification specification) {
-        final RealmWrapper realmWrapper = new RealmWrapper();
-        final RealmSpecification realmSpecification = ((RealmSpecification) specification);
+        RealmWrapper realmWrapper = new RealmWrapper();
+        RealmSpecification realmSpecification = ((RealmSpecification) specification);
         return Observable.just(item)
                 .doOnSubscribe(() -> {
                     realmWrapper.realm = realmProvider.provide();
                     realmWrapper.realm.beginTransaction();
                 })
-                .map(toRealmMapper::from)
+                .map(entityToRealmMapper::from)
                 .doOnNext(newStation -> {
                     StationRealm stationToUpdate =
                             realmSpecification.toRealmQuery(realmWrapper.realm).findFirst();
@@ -102,7 +103,7 @@ public class StationRealmRepository implements Repository<StationEntity> {
         RealmSpecification realmSpecification = ((RealmSpecification) specification);
         return Observable
                 .fromCallable(() -> realmSpecification.toRealmQuery(realmWrapper.realm).findFirst())
-                .map(toEntityMapper::from)
+                .map(realmToEntityMapper::from)
                 .doOnSubscribe(() -> {
                     realmWrapper.realm = realmProvider.provide();
                     realmWrapper.realm.beginTransaction();
