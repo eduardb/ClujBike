@@ -14,6 +14,7 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
 public class StationEntityRealmMapperTest {
+
     StationEntityRealmMapper sut;
 
     @Before
@@ -24,9 +25,7 @@ public class StationEntityRealmMapperTest {
     @Test
     public void givenStationEntity_whenMappingToStationRealmSuccessfully_thenAllFieldsAreEqual() {
         StationEntity stationEntity = givenStationEntity("Union Square", 12);
-        StationRealm stationRealm;
-
-        stationRealm = sut.from(stationEntity);
+        StationRealm stationRealm = sut.from(stationEntity);
 
         assertEquals(stationEntity.id(), stationRealm.getId());
         assertEquals(stationEntity.name(), stationRealm.getName());
