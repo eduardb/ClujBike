@@ -14,6 +14,7 @@ import static junit.framework.Assert.assertEquals;
 
 @RunWith(JUnit4.class)
 public class StationRealmEntityMapperTest {
+
     StationRealmEntityMapper sut;
 
     @Before

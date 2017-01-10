@@ -50,7 +50,7 @@ public class StationRealmRepository implements Repository<StationEntity> {
     @Override
     public Completable update(StationEntity item, Specification specification) {
         RealmWrapper realmWrapper = new RealmWrapper();
-        RealmSpecification realmSpecification = ((RealmSpecification) specification);
+        RealmSpecification<StationRealm> realmSpecification = ((RealmSpecification<StationRealm>) specification);
         return Observable.just(item)
                 .doOnSubscribe(() -> {
                     realmWrapper.realm = realmProvider.provide();
@@ -77,7 +77,7 @@ public class StationRealmRepository implements Repository<StationEntity> {
     @Override
     public Completable remove(Specification specification) {
         RealmWrapper realmWrapper = new RealmWrapper();
-        RealmSpecification realmSpecification = ((RealmSpecification) specification);
+        RealmSpecification<StationRealm> realmSpecification = ((RealmSpecification<StationRealm>) specification);
         return Completable.fromAction(() -> {
             StationRealm stationToBeRemoved =
                     realmSpecification.toRealmQuery(realmWrapper.realm).findFirst();
@@ -100,7 +100,7 @@ public class StationRealmRepository implements Repository<StationEntity> {
     @Override
     public Observable<StationEntity> query(Specification specification) {
         RealmWrapper realmWrapper = new RealmWrapper();
-        RealmSpecification realmSpecification = ((RealmSpecification) specification);
+        RealmSpecification<StationRealm> realmSpecification = (RealmSpecification<StationRealm>) specification;
         return Observable
                 .fromCallable(() -> realmSpecification.toRealmQuery(realmWrapper.realm).findFirst())
                 .map(realmToEntityMapper::from)

@@ -1,11 +1,9 @@
 package com.deveddy.clujbike.data.repository.specifications;
 
-import com.deveddy.clujbike.data.repository.models.StationRealm;
-
 import io.realm.Realm;
+import io.realm.RealmObject;
 import io.realm.RealmQuery;
 
-public interface RealmSpecification extends Specification {
-    RealmQuery<StationRealm> toRealmQuery(Realm realm);
-
+public interface RealmSpecification<T extends RealmObject> extends Specification {
+    RealmQuery<T> toRealmQuery(Realm realm);
 }
