@@ -14,8 +14,6 @@ jobs:
       with:
         java-version: 1.8
     - uses: malinskiy/action-android/install-sdk@release/0.0.2
-    - name: Coverage report
-      run: chmod +x gradlew && ./gradlew createDebugCoverageReport
     - name: integration test
       uses: malinskiy/action-android/emulator-run-cmd@release/0.0.2
       with:
